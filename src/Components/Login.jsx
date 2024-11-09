@@ -1,4 +1,9 @@
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { useState } from "react";
 import { FaGithubAlt } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -8,6 +13,7 @@ const Login = () => {
   const [user, setUser] = useState(null);
 
   const googleProvider = new GoogleAuthProvider();
+  const githubProvider = new GithubAuthProvider();
 
   const handleGoogleSignIn = (e) => {
     e.preventDefault();
@@ -32,7 +38,16 @@ const Login = () => {
 
   const handleGithubSignIn = (e) => {
     e.preventDefault();
-    console.log("git ok");
+
+    signInWithPopup(auth, githubProvider)
+      .then((result) => {
+        console.log(result.user);
+        setUser(result.user);
+      })
+      .catch((error) => {
+        console.log("ERROR", error);
+        setUser(null);
+      });
   };
   return (
     <div>
